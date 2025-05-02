@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Pelanggan WiFi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --danger: #f72585;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            display: inline-block;
+        }
+
+        header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #f8f9fa;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            background-color: white;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--gray);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #3aa8d8;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #e11772;
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 0.85rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background-color: rgba(76, 201, 240, 0.2);
+            color: var(--success);
+        }
+
+        .status-inactive {
+            background-color: rgba(247, 37, 133, 0.2);
+            color: var(--danger);
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 20px rgba(67, 97, 238, 0.4);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .floating-btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-5px) scale(1.1);
+            animation: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Animations */
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            th, td {
+                padding: 10px 8px;
+                font-size: 0.85rem;
+            }
+
+            .btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+
+            .floating-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 10px;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-control, .search-input {
+                padding: 10px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="animate-pulse">Manajemen Pelanggan WiFi TIARA.NET</h1>
+            <p>Kelola data pelanggan dengan mudah dan efisien</p>
+        </header>
+
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-user-plus"></i> Form Pelanggan Baru</h2>
+            <form id="customerForm">
+                <div class="form-group">
+                    <label for="customerId">ID Pelanggan</label>
+                    <input type="text" id="customerId" class="form-control" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="customerName">Nama Lengkap</label>
+                    <input type="text" id="customerName" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="customerAddress">Alamat</label>
+                    <input type="text" id="customerAddress" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="customerPhone">Nomor Telepon</label>
+                    <input type="tel" id="customerPhone" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="customerPackage">Paket WiFi</label>
+                    <select id="customerPackage" class="form-control" required>
+                        <option value="">-- Pilih Paket --</option>
+                        <option value="15 Mbps - Rp 150.000/bulan">15 Mbps - Rp 150.000/bulan</option>
+                        <option value="20 Mbps - Rp 200.000/bulan">20 Mbps - Rp 200.000/bulan</option>
+                        <option value="30 Mbps - Rp 250.000/bulan">30 Mbps - Rp 250.000/bulan</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="customerStatus">Status</label>
+                    <select id="customerStatus" class="form-control" required>
+                        <option value="Aktif">Aktif</option>
+                        <option value="Non-Aktif">Non-Aktif</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <button type="submit" id="saveBtn" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Data
+                    </button>
+                    <button type="button" id="cancelEditBtn" class="btn btn-secondary hidden">
+                        <i class="fas fa-times"></i> Batal Edit
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-search"></i> Cari Pelanggan</h2>
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Cari berdasarkan nama, alamat, atau ID...">
+                <button id="searchBtn" class="btn btn-success">
+                    <i class="fas fa-search"></i> Cari
+                </button>
+                <button id="resetSearchBtn" class="btn btn-secondary">
+                    <i class="fas fa-sync-alt"></i> Reset
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-users"></i> Daftar Pelanggan</h2>
+            <div class="table-responsive">
+                <table id="customerTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama</th>
+                            <th>Alamat</th>
+                            <th>Telepon</th>
+                            <th>Paket</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data pelanggan akan ditampilkan di sini -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-btn" id="exportExcelBtn" title="Export ke Excel">
+        <i class="fas fa-file-excel"></i>
+    </div>
+
+    <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
+    <script>
+        // JavaScript Code
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inisialisasi
+            let customers = JSON.parse(localStorage.getItem('wifiCustomers')) || [];
+            let isEditing = false;
+            let currentEditId = null;
+            
+            // Generate ID otomatis saat pertama kali load
+            generateCustomerId();
+            
+            // Load data dari localStorage
+            loadCustomersFromLocalStorage();
+            
+            // Form submission
+            document.getElementById('customerForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (isEditing) {
+                    updateCustomer();
+                } else {
+                    addCustomer();
+                }
+            });
+            
+            // Cancel edit
+            document.getElementById('cancelEditBtn').addEventListener('click', function() {
+                cancelEdit();
+            });
+            
+            // Search functionality
+            document.getElementById('searchBtn').addEventListener('click', function() {
+                searchCustomer();
+            });
+            
+            document.getElementById('searchInput').addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    searchCustomer();
+                }
+            });
+            
+            // Reset search
+            document.getElementById('resetSearchBtn').addEventListener('click', function() {
+                document.getElementById('searchInput').value = '';
+                loadCustomersFromLocalStorage();
+            });
+            
+            // Export to Excel
+            document.getElementById('exportExcelBtn').addEventListener('click', exportToExcel);
+            
+            // Generate ID pelanggan otomatis
+            function generateCustomerId() {
+                const now = new Date();
+                const year = now.getFullYear().toString().slice(-2);
+                const month = (now.getMonth() + 1).toString().padStart(2, '0');
+                const day = now.getDate().toString().padStart(2, '0');
+                const randomNum = Math.floor(Math.random() * 900) + 100;
+                
+                const customerId = `WIFI-${year}${month}${day}-${randomNum}`;
+                document.getElementById('customerId').value = customerId;
+                
+                return customerId;
+            }
+            
+            // Menambahkan pelanggan baru
+            function addCustomer() {
+                // Ambil nilai dari form
+                const customerId = document.getElementById('customerId').value;
+                const customerName = document.getElementById('customerName').value;
+                const customerAddress = document.getElementById('customerAddress').value;
+                const customerPhone = document.getElementById('customerPhone').value;
+                const customerPackage = document.getElementById('customerPackage').value;
+                const customerStatus = document.getElementById('customerStatus').value;
+                
+                // Validasi form
+                if (!customerName || !customerAddress || !customerPhone || !customerPackage) {
+                    showAlert('error', 'Harap isi semua field!');
+                    return;
+                }
+                
+                // Validasi nomor telepon
+                if (!/^[0-9]{10,13}$/.test(customerPhone)) {
+                    showAlert('error', 'Nomor telepon harus 10-13 digit angka!');
+                    return;
+                }
+                
+                // Tambahkan ke array customers
+                const newCustomer = {
+                    id: customerId,
+                    name: customerName,
+                    address: customerAddress,
+                    phone: customerPhone,
+                    package: customerPackage,
+                    status: customerStatus,
+                    joinDate: new Date().toISOString()
+                };
+                
+                customers.push(newCustomer);
+                
+                // Simpan ke localStorage
+                saveCustomersToLocalStorage();
+                
+                // Refresh tampilan
+                loadCustomersFromLocalStorage();
+                
+                // Reset form dan generate ID baru
+                document.getElementById('customerForm').reset();
+                generateCustomerId();
+                
+                // Tampilkan notifikasi
+                showAlert('success', 'Pelanggan berhasil ditambahkan!');
+                
+                // Animasi
+                const saveBtn = document.getElementById('saveBtn');
+                saveBtn.innerHTML = '<i class="fas fa-check"></i> Berhasil!';
+                setTimeout(() => {
+                    saveBtn.innerHTML = '<i class="fas fa-save"></i> Simpan Data';
+                }, 2000);
+            }
+            
+            // Edit pelanggan
+            function editCustomer(customerId) {
+                const customer = customers.find(c => c.id === customerId);
+                if (!customer) return;
+                
+                isEditing = true;
+                currentEditId = customerId;
+                
+                // Isi form dengan data pelanggan
+                document.getElementById('customerId').value = customer.id;
+                document.getElementById('customerName').value = customer.name;
+                document.getElementById('customerAddress').value = customer.address;
+                document.getElementById('customerPhone').value = customer.phone;
+                document.getElementById('customerPackage').value = customer.package;
+                document.getElementById('customerStatus').value = customer.status;
+                
+                // Ubah tombol
+                document.getElementById('saveBtn').innerHTML = '<i class="fas fa-edit"></i> Update Data';
+                document.getElementById('cancelEditBtn').classList.remove('hidden');
+                
+                // Scroll ke form
+                document.getElementById('customerForm').scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Update pelanggan
+            function updateCustomer() {
+                const customerIndex = customers.findIndex(c => c.id === currentEditId);
+                if (customerIndex === -1) return;
+                
+                // Update data pelanggan
+                customers[customerIndex] = {
+                    id: document.getElementById('customerId').value,
+                    name: document.getElementById('customerName').value,
+                    address: document.getElementById('customerAddress').value,
+                    phone: document.getElementById('customerPhone').value,
+                    package: document.getElementById('customerPackage').value,
+                    status: document.getElementById('customerStatus').value,
+                    joinDate: customers[customerIndex].joinDate
+                };
+                
+                // Simpan ke localStorage
+                saveCustomersToLocalStorage();
+                
+                // Refresh tampilan
+                loadCustomersFromLocalStorage();
+                
+                // Reset form
+                cancelEdit();
+                
+                // Tampilkan notifikasi
+                showAlert('success', 'Data pelanggan berhasil diupdate!');
+            }
+            
+            // Batalkan edit
+            function cancelEdit() {
+                isEditing = false;
+                currentEditId = null;
+                
+                document.getElementById('customerForm').reset();
+                generateCustomerId();
+                
+                document.getElementById('saveBtn').innerHTML = '<i class="fas fa-save"></i> Simpan Data';
+                document.getElementById('cancelEditBtn').classList.add('hidden');
+            }
+            
+            // Hapus pelanggan
+            function deleteCustomer(customerId) {
+                // Tampilkan modal konfirmasi
+                if (confirm('Apakah Anda yakin ingin menghapus pelanggan ini?')) {
+                    customers = customers.filter(c => c.id !== customerId);
+                    
+                    // Simpan ke localStorage
+                    saveCustomersToLocalStorage();
+                    
+                    // Refresh tampilan
+                    loadCustomersFromLocalStorage();
+                    
+                    // Jika sedang edit, batalkan edit
+                    if (isEditing && currentEditId === customerId) {
+                        cancelEdit();
+                    }
+                    
+                    // Tampilkan notifikasi
+                    showAlert('success', 'Pelanggan berhasil dihapus!');
+                }
+            }
+            
+            // Cari pelanggan
+            function searchCustomer() {
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                
+                if (!searchTerm) {
+                    loadCustomersFromLocalStorage();
+                    return;
+                }
+                
+                const filteredCustomers = customers.filter(customer => 
+                    customer.id.toLowerCase().includes(searchTerm) ||
+                    customer.name.toLowerCase().includes(searchTerm) ||
+                    customer.address.toLowerCase().includes(searchTerm) ||
+                    customer.phone.toLowerCase().includes(searchTerm) ||
+                    customer.package.toLowerCase().includes(searchTerm)
+                );
+                
+                renderCustomerTable(filteredCustomers);
+            }
+            
+            // Simpan data ke localStorage
+            function saveCustomersToLocalStorage() {
+                localStorage.setItem('wifiCustomers', JSON.stringify(customers));
+            }
+            
+            // Load data dari localStorage dan tampilkan di tabel
+            function loadCustomersFromLocalStorage() {
+                customers = JSON.parse(localStorage.getItem('wifiCustomers')) || [];
+                renderCustomerTable(customers);
+            }
+            
+            // Render tabel pelanggan
+            function renderCustomerTable(customersToRender) {
+                const tableBody = document.querySelector('#customerTable tbody');
+                tableBody.innerHTML = '';
+                
+                if (customersToRender.length === 0) {
+                    const row = tableBody.insertRow();
+                    row.innerHTML = `<td colspan="7" style="text-align: center;">Tidak ada data pelanggan</td>`;
+                    return;
+                }
+                
+                customersToRender.forEach(customer => {
+                    const newRow = tableBody.insertRow();
+                    newRow.innerHTML = `
+                        <td>${customer.id}</td>
+                        <td>${customer.name}</td>
+                        <td>${customer.address}</td>
+                        <td>${customer.phone}</td>
+                        <td>${customer.package}</td>
+                        <td><span class="status-badge ${customer.status === 'Aktif' ? 'status-active' : 'status-inactive'}">
+                            ${customer.status}
+                        </span></td>
+                        <td class="action-buttons">
+                            <button onclick="editCustomer('${customer.id}')" class="btn btn-success btn-sm">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button onclick="deleteCustomer('${customer.id}')" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i> Hapus
+                            </button>
+                        </td>
+                    `;
+                });
+            }
+            
+            // Export ke Excel
+            function exportToExcel() {
+                // Prepare data
+                const data = [
+                    ['ID Pelanggan', 'Nama', 'Alamat', 'Telepon', 'Paket', 'Status', 'Tanggal Bergabung'],
+                    ...customers.map(customer => [
+                        customer.id,
+                        customer.name,
+                        customer.address,
+                        customer.phone,
+                        customer.package,
+                        customer.status,
+                        new Date(customer.joinDate).toLocaleDateString()
+                    ])
+                ];
+                
+                // Create workbook
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.aoa_to_sheet(data);
+                XLSX.utils.book_append_sheet(wb, ws, "Pelanggan WiFi");
+                
+                // Export to file
+                const date = new Date();
+                const dateStr = `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+                XLSX.writeFile(wb, `Data_Pelanggan_WIFI_${dateStr}.xlsx`);
+                
+                // Tampilkan notifikasi
+                showAlert('success', 'Data berhasil diexport ke Excel!');
+            }
+            
+            // Tampilkan notifikasi
+            function showAlert(type, message) {
+                const alert = document.createElement('div');
+                alert.className = `alert-${type}`;
+                alert.style.position = 'fixed';
+                alert.style.top = '20px';
+                alert.style.right = '20px';
+                alert.style.padding = '15px 25px';
+                alert.style.borderRadius = '8px';
+                alert.style.color = 'white';
+                alert.style.fontWeight = '500';
+                alert.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
+                alert.style.zIndex = '1000';
+                alert.style.animation = 'fadeIn 0.5s';
+                alert.style.display = 'flex';
+                alert.style.alignItems = 'center';
+                alert.style.gap = '10px';
+                
+                if (type === 'success') {
+                    alert.style.backgroundColor = '#4BB543';
+                } else {
+                    alert.style.backgroundColor = '#FF3333';
+                }
+                
+                alert.innerHTML = `
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    ${message}
+                `;
+                
+                document.body.appendChild(alert);
+                
+                // Hilangkan setelah 3 detik
+                setTimeout(() => {
+                    alert.style.animation = 'fadeOut 0.5s';
+                    setTimeout(() => {
+                        document.body.removeChild(alert);
+                    }, 500);
+                }, 3000);
+            }
+            
+            // Make functions available globally for inline event handlers
+            window.editCustomer = editCustomer;
+            window.deleteCustomer = deleteCustomer;
+        });
+    </script>
+</body>
+</html>
